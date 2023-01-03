@@ -1,0 +1,4 @@
+/build
+/_deps
+/CMakeFiles
+.cortex-debug*

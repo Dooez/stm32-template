@@ -1,0 +1,8 @@
+{
+  "cmake.generator": "Ninja",
+  "cmake.configureEnvironment": {
+    "CMAKE_EXPORT_COMPILE_COMMANDS": "on"
+  },
+  "C_Cpp.default.intelliSenseMode": "gcc-arm",
+  "cortex-debug.gdbPath": "gdb-multiarch"
+}
