@@ -10,7 +10,7 @@
       "servertype": "openocd",
       "device": "STM32F401CC",
       "configFiles": [
-        "interface/stlink.cfg",
+        "interface/stlink.cfg", // change to match unterface
         "target/stm32f4x.cfg" // change to match the used MCU family
       ],
       "preLaunchTask": "flash-openocd",

@@ -1,17 +1,16 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.16)
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/stm32-cmake/cmake/stm32_gcc.cmake)
 include(fetch_svd.cmake)
 
 # Select MCU model:
 set(MCU STM32F401CC)
-# Set project name:
-set(PROJECT_NAME test_stm32)
+
+# Set project name to match directory name. If set othervise tasks.json and launch.json should be updated
+get_filename_component(BASE_FOLDER ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+set(PROJECT_NAME ${BASE_FOLDER})
 
 project(${PROJECT_NAME} C CXX ASM)
 
-# Set ouput binaries name to match directory name. If set othervise tasks.json and launch.json should be updated
-cmake_path(GET CMAKE_CURRENT_SOURCE_DIR FILENAME BIN_NAME)
-set(OUTPUT_NAME ${BIN_NAME})
 
 # MCU familiy from MCU
 string(SUBSTRING ${MCU} 5 2 MCU_FAMILY)
