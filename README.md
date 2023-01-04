@@ -1,18 +1,21 @@
 # Description
-This repository is a template for stm32 development in VSCode.
+This repository is a template for stm32 development with VSCode and CMake in WSL.
 Main tools:
 - [WSL](https://learn.microsoft.com/en-us/windows/wsl/)  
 - [USB-IP](https://github.com/dorssel/usbipd-win/releases)  
-- [CMake](https://cmake.org/)  
+- [CMake](https://cmake.org/) with [stm32 toolchain](https://github.com/ObKo/stm32-cmake/)
 - [openOCD](https://openocd.org/)  
 - [stlink](https://github.com/stlink-org/stlink)  
+- gdb
+
 
 ## First step: WSL installation
 This toolchain was tested in WSL2 with Ubuntu 22.04. Without deep dive I was unable to make it work in Ubuntu 20.04.
-Suggested installation:
+Suggested installation:  
+
 0. (optional) Install Windows Terminal
 1. Open PowerShell
-2. type
+2. Run
     ```
     curl (("https://cloud-images.ubuntu.com",
     "wsl/jammy/current/",
@@ -34,14 +37,14 @@ Suggested installation:
 4. Run  
 `wsl -d <Distribution Name>`   
 We've now entered ubuntu shell.  
-5. Run  
+1. Run  
 `NEW_USER=<USERNAME>`   
 This will store username for future use.  
   
     Next, create user and set password:  
     `useradd -m -G sudo -s /bin/bash "$NEW_USER"`  
     `passwd "$NEW_USER"`  
-6. Run
+1. Run
     ```
     tee /etc/wsl.conf <<_EOF
     [user]
@@ -49,7 +52,7 @@ This will store username for future use.
     _EOF
     ```
     This will change created user to be the default when you log in.  
-7. Run  
+2. Run  
 `logout`  
 to exit wsl and then run   
 `wsl --terminate <Distribution Name>`  
@@ -72,8 +75,8 @@ Example:
 6. Install suggested extensions.
 7. Run  
 `sudo ./install_toolchain.sh $USER`  
-This will install required tools and set up usbip.
-8. After script finished, relaunch WSL.
+This will install required tools and set up usbip in WSL.
+8. After script finished, reboot WSL.
 
 
 ## Thirds step: Setting up USB-IP
@@ -105,14 +108,20 @@ And you should see your device
     Bus 001 Device 002: ID 0483:3748 STMicroelectronics ST-LINK/V2
     ```
 
+You will need to repeat this step when you reboot WSL or host machine
+
 See [usbipd wiki](https://github.com/dorssel/usbipd-win/wiki/WSL-support) for more detailed info.
 
 ## Usage
 
 1. After running installation shell script, installing the extensions and relaunching VSCode CMake Tools should ask for kit. If not, you may select kit from bottom panel. If everything is successfully installed, arm-none-eabi will be available, this is the kit you need.
-2. Open CMakeLists.txt and change MCU model to match your device. After saving CMakeLists.txt CMake Tools extension will run configuration and all dependencies should be downloaded.
+2. Open CMakeLists.txt and change MCU model to match your device. After saving CMakeLists.txt CMake Tools extension will run configuration and all dependencies should be downloaded. Read [stm32-cmake](https://github.com/ObKo/stm32-cmake/) documentation on how to use it.
 3. Open .vscode/launch.json and update `device`, `configFiles` and `svdFile`. You can find .svd file in the folder if CMake ran successfully.
-4. To build use [CMake: build] build task (Ctrl + Shift + B by default) or hotkey (F7 by default).
-5. To flash use [flash] build task (Ctrl + Shift + B by default).
-6. For debugging use Run and Debug window (Ctrl + Shift + D by default) or hotkey (F5).  
+4. Copy `stm32<>xx_hal_conf.h` configured (by STM32CubeMX for example) for your board.
+5. To build use [CMake: build] build task (Ctrl + Shift + B by default) or hotkey (F7 by default).
+6. To flash use [flash] build task (Ctrl + Shift + B by default).
+7. For debugging use Run and Debug window (Ctrl + Shift + D by default) or hotkey (F5).  
 You can update the binary without stopping the debug by using Restart (Ctrl + Shift + F5, or green circular arrow on debug panel)
+
+## Acknowlegment
+Great [guide by ERBO-Engineering](https://medium.com/@erbo-engineering/using-vs-code-for-embedded-stm32-development-14405ed4ac82).

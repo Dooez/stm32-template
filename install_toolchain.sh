@@ -19,7 +19,7 @@ sudo apt-get -y install gdb-multiarch
 sudo apt-get -y install stlink-tools
 sudo apt-get -y install openocd
 sudo apt-get -y install telnet
-bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+# bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" # probably not needed
 sudo apt-get -y install clang-format
 sudo apt-get -y install clang-tidy
 sudo apt-get -y install linux-tools-virtual hwdata
