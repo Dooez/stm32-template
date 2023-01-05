@@ -15,7 +15,7 @@
       ],
       "preLaunchTask": "flash-openocd",
       "showDevDebugOutput": "raw",
-      "svdFile": "${workspaceRoot}/_deps/SVD/STM32F401x.svd", // after CMake configuration is done, stored in ./_deps/SVD
+      "svdFile": "${workspaceRoot}/build/_deps/SVD/STM32F401x.svd", // after CMake configuration is done, stored in ./build/_deps/SVD
     }
   ]
 }

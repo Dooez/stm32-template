@@ -37,6 +37,7 @@ target_link_libraries(${PROJECT_NAME}
     STM32::Nano # use newlib nano to reduce code size.
     STM32::NoSys
 )
+set(CMAKE_CXX_STANDARD 20)
 
 stm32_print_size_of_target(${PROJECT_NAME})
 stm32_generate_binary_file(${PROJECT_NAME})
