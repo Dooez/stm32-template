@@ -44,6 +44,18 @@
       },
       "detail": "Builds project, connects to the openOCD server and flashes new firmware."
 
+    },
+    {
+      "type": "shell",
+      "label": "attach ST-Link",
+      "command": "usbipd wsl attach --busid ((usbipd wsl list | Select-String \"ST\" | Select-String \"^[0-9]\") -split ' ')[0].substring(0) -d \"Ubuntu-22.04\"",
+      "detail": "attaches ST-Link to Ubuntu 22.04"
+    },
+    {
+      "type": "shell",
+      "label": "dettach ST-Link",
+      "command": "usbipd wsl detach --busid ((usbipd wsl list | Select-String \"ST\" | Select-String \"^[0-9]\") -split ' ')[0].substring(0)",
+      "detail": "attaches ST-Link to Ubuntu 22.04"
     }
   ]
 }
