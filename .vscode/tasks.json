@@ -44,6 +44,28 @@
       },
       "detail": "Builds project, connects to the openOCD server and flashes new firmware."
 
-    }
+    },
+    {
+      "type": "shell",
+      "label": "attach ST-Link",
+      "command": "powershell.exe",
+      "args": [
+        "\"",
+        "&",
+        "'./../PS Scripts/attach_st_link.ps1'",
+        "\""
+      ],
+    },
+    {
+      "type": "shell",
+      "label": "detach ST-Link",
+      "command": "powershell.exe",
+      "args": [
+        "\"",
+        "&",
+        "'./../PS Scripts/detach_st_link.ps1'",
+        "\""
+      ],
+    },
   ]
 }
