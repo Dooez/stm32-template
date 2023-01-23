@@ -18,7 +18,7 @@
       "args": [
         "--reset",
         "write",
-        "${workspaceFolderBasename}.bin", // Check if forward slash path is required
+        "${command:cmake.getLaunchTargetFilename}.bin", // Check if forward slash path is required
         "0x8000000"
       ],
       "options": {

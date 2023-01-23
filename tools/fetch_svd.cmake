@@ -71,8 +71,7 @@ function(fetch_svd MCU)
     endif()
 endfunction()
 
-# Generates or update launch.json
-# CAREFUL: DELETES COMMENTS and rarranges all fields alphabetically
+# Generates or updates launch.json
 function(update_launch_json MCU)
     set(SVD_FOUND ON)
     if ("$ENV{BEST_FIT_SVD}" STREQUAL "")
@@ -160,7 +159,6 @@ endfunction()
 # Tries to match MCU with FILEEXTENSION and writes to <output>.
 # If FILE fits MCU, <output> is the number of defined symbols in mcu name, otherwise <output> equals -1.
 # Higher values of <output> should mean better match.
-
 function(match_mcu_to_file MCU FILE EXTENSION output)
     string(FIND ${FILE} "_" UNDERSCORE_POS)
     if(UNDERSCORE_POS EQUAL -1)
@@ -185,6 +183,23 @@ function(match_mcu_to_file MCU FILE EXTENSION output)
     endif()
 endfunction()
 
+#Generates binary file and copies it with name <TARGET>.elf.bin
+function(stm32_generate_elf_bin TARGET)
+    stm32_generate_binary_file(${TARGET})
+    file(COPY_FILE "${CMAKE_BINARY_DIR}/${TARGET}.bin" "${CMAKE_BINARY_DIR}/${TARGET}.elf.bin" RESULT COPY_ERROR)
+    if(NOT COPY_ERROR EQUAL 0)
+        message("Error copying .bin file: ${COPY_ERROR}")
+    endif()
+endfunction()
+
+#Generates hex file and copies it with name <TARGET>.elf.hex
+function(stm32_generate_elf_hex TARGET)
+    stm32_generate_hex_file(${TARGET})
+    file(COPY_FILE "${CMAKE_BINARY_DIR}/${TARGET}.hex" "${CMAKE_BINARY_DIR}/${TARGET}.elf.hex" RESULT COPY_ERROR)
+    if(NOT COPY_ERROR EQUAL 0)
+        message("Error copying .bin file: ${COPY_ERROR}")
+    endif()
+endfunction()
 
 function(set_svd_repo_contents)
     set(SVD_REPO_CONTENTS

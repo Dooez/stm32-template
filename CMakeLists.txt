@@ -41,5 +41,5 @@ target_link_libraries(${PROJECT_NAME}
 set(CMAKE_CXX_STANDARD 20)
 
 stm32_print_size_of_target(${PROJECT_NAME})
-stm32_generate_binary_file(${PROJECT_NAME})
-stm32_generate_hex_file(${PROJECT_NAME})
+stm32_generate_elf_bin(${PROJECT_NAME})
+stm32_generate_elf_hex(${PROJECT_NAME})
