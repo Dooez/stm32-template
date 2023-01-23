@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Cortex Debug ST-Util",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "stutil",
+            "cwd": "${workspaceRoot}",
+            "executable": "${command:cmake.launchTargetPath}",
+            "preLaunchTask": "CMake: build",
+            "preRestartCommands": [
+                "load",
+                "enable breakpoint",
+                "monitor reset"
+            ],
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "raw",
+            "device": "", /* #update this field with CMake */
+            "svdFile": "" /* #update this field with CMake */
+        }
+    ]
+}

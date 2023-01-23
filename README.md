@@ -1,17 +1,29 @@
 # Description
-This repository is a template for stm32 development with VSCode and CMake in WSL.
-Main tools:
-- [WSL](https://learn.microsoft.com/en-us/windows/wsl/)  
-- [USB-IP](https://github.com/dorssel/usbipd-win/releases)  
+This repository is a template for stm32 development with VSCode and CMake in Windows/WSL.
+Main tools: 
 - [CMake](https://cmake.org/) with [stm32 toolchain](https://github.com/ObKo/stm32-cmake/)
-- [openOCD](https://openocd.org/)  
 - [stlink](https://github.com/stlink-org/stlink)  
+- gcc arm
 - gdb
+- [WSL](https://learn.microsoft.com/en-us/windows/wsl/)*
+- [USB-IP](https://github.com/dorssel/usbipd-win/releases)*  
+*- if using WSL
 
+# Pure Windows:
+Execute `tools/install_toolchain_win_scoop.bat`. This will install scoop package manager and all required toolchain components.
 
+# Windows + WSL
 ## First step: WSL installation
 This toolchain was tested in WSL2 with Ubuntu 22.04. Without deep dive I was unable to make it work in Ubuntu 20.04.
-Suggested installation:  
+Suggested installation:    
+
+0. (optional) Install Windows Terminal
+1. Run   
+   ```
+   wsl --install
+   ```
+
+If wsl is already installed, it is possible to add new distribution:   
 
 0. (optional) Install Windows Terminal
 1. Open PowerShell
@@ -112,16 +124,14 @@ You will need to repeat this step when you reboot WSL or host machine
 
 See [usbipd wiki](https://github.com/dorssel/usbipd-win/wiki/WSL-support) for more detailed info.
 
-## Usage
+# Usage
 
 1. After running installation shell script, installing the extensions and relaunching VSCode CMake Tools should ask for kit. If not, you may select kit from bottom panel. If everything is successfully installed, arm-none-eabi will be available, this is the kit you need.
-2. Open CMakeLists.txt and change MCU model to match your device. After saving CMakeLists.txt CMake Tools extension will run configuration and all dependencies should be downloaded. Read [stm32-cmake](https://github.com/ObKo/stm32-cmake/) documentation on how to use it.
-3. Open .vscode/launch.json and update `device`, `configFiles` and `svdFile`. You can find .svd file in the folder if CMake ran successfully.
+2. Open CMakeLists.txt and change MCU model to match your device. After saving CMakeLists.txt CMake Tools extension will run configuration and all dependencies should be downloaded. Read [stm32-cmake](https://github.com/ObKo/stm32-cmake/) documentation on how to use it. `fetch_svd(<mcu>)` and `update_launch_json()` CMake function will download SVD file and update `launch.json` fields marked by comment `... /* #update this field with CMake */`
 4. Copy `stm32<>xx_hal_conf.h` configured (by STM32CubeMX for example) for your board.
 5. To build use [CMake: build] build task (Ctrl + Shift + B by default) or hotkey (F7 by default).
-6. To flash use [flash] build task (Ctrl + Shift + B by default).
-7. For debugging use Run and Debug window (Ctrl + Shift + D by default) or hotkey (F5).  
-You can update the binary without stopping the debug by using Restart (Ctrl + Shift + F5, or green circular arrow on debug panel)
+To flash and erase use [ST Flash] and [ST Erase] tasks.
+1. For debugging use Run and Debug window (Ctrl + Shift + D by default) or hotkey (F5).
 
-## Acknowlegment
-Great [guide by ERBO-Engineering](https://medium.com/@erbo-engineering/using-vs-code-for-embedded-stm32-development-14405ed4ac82).
+# Acknowlegment
+[Guide by ERBO-Engineering](https://medium.com/@erbo-engineering/using-vs-code-for-embedded-stm32-development-14405ed4ac82).
