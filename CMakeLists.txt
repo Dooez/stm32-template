@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.19)
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/stm32-cmake/cmake/stm32_gcc.cmake)
-include(fetch_svd.cmake)
+include(tools/fetch_svd.cmake)
 
 # Select MCU model:
 set(MCU STM32F401CC)
@@ -20,7 +20,7 @@ string(SUBSTRING ${MCU} 5 6 MCU_MODEL)
 fetch_svd(${MCU})
 stm32_fetch_cmsis(${MCU_FAMILY})
 stm32_fetch_hal(${MCU_FAMILY})
-generate_launch_json(${MCU})
+update_launch_json(${MCU})
 
 find_package(CMSIS COMPONENTS  ${MCU} REQUIRED)
 find_package(HAL COMPONENTS STM32${MCU_FAMILY} REQUIRED)

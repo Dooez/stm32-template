@@ -17,11 +17,7 @@ sudo apt-get -y install gcc-arm-none-eabi
 sudo apt-get -y install gdb
 sudo apt-get -y install gdb-multiarch
 sudo apt-get -y install stlink-tools
-sudo apt-get -y install openocd
-sudo apt-get -y install telnet
-# bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" # probably not needed
-sudo apt-get -y install clang-format
-sudo apt-get -y install clang-tidy
+
 sudo apt-get -y install linux-tools-virtual hwdata
 sudo update-alternatives --install /usr/local/bin/usbip usbip `ls /usr/lib/linux-tools/*/usbip | tail -n1` 20
 sudo apt-get -y install libudev-dev
