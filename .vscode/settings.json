@@ -4,6 +4,6 @@
     "CMAKE_EXPORT_COMPILE_COMMANDS": "on"
   },
   "C_Cpp.default.intelliSenseMode": "gcc-arm",
-  "cortex-debug.gdbPath": "gdb-multiarch",
+  "cortex-debug.gdbPath": "gdb-multiarch", // Need to check for multiplatform alias
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

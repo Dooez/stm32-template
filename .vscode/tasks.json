@@ -13,11 +13,12 @@
     },
     {
       "type": "shell",
-      "label": "flash",
+      "label": "ST Flash",
       "command": "st-flash",
       "args": [
+        "--reset",
         "write",
-        "${workspaceFolderBasename}.bin",
+        "${workspaceFolderBasename}.bin", // Check if forward slash path is required
         "0x8000000"
       ],
       "options": {
@@ -25,25 +26,18 @@
       },
       "dependsOn": "CMake: build",
       "problemMatcher": [],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
       "detail": "Builds project and flashes firmware."
 
     },
     {
       "type": "shell",
-      "label": "flash-openocd",
-      "command": "echo \"program ${workspaceFolder}/build/${workspaceFolderBasename}.bin 0x08000000\" | telnet localhost 50002; true",
-      "dependsOn": "CMake: build",
-      "problemMatcher": [],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "detail": "Builds project, connects to the openOCD server and flashes new firmware."
-
+      "label": "ST Erase",
+      "command": "st-flash",
+      "args": [
+        "--connect-under-reset",
+        "erase"
+      ],
+      "detail": "Perform a mass erasing of the device firmware"
     }
   ]
 }
