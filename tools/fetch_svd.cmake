@@ -111,19 +111,21 @@ function(update_launch_json MCU)
     
     set(UPDATED_DEVICE 0)
     set(UPDATED_SVD 0)
-    while(TRUE)
-        if(${LAUNCH_JSON} STREQUAL "")
-            break()
-        endif()
+    set(COUNT 1000) # If something goes wrong prevent endless loop
+    while(${COUNT} GREATER 0)
+        math(EXPR COUNT "${COUNT}-1")
+        string(LENGTH ${LAUNCH_JSON} LAUNCH_LENGTH)
+
         string(FIND ${LAUNCH_JSON} "\n" POS)
-        if(POS LESS 1)
+        math(EXPR POS "${POS} + 2")
+        if(${POS} GREATER_EQUAL ${LAUNCH_LENGTH})
             string(APPEND UPDATED_LAUNCH_JSON ${LAUNCH_JSON})
             break()
         endif()
-        math(EXPR POS "${POS} + 2")
+            
         string(SUBSTRING ${LAUNCH_JSON} 0 ${POS} STR)
         string(SUBSTRING ${LAUNCH_JSON} ${POS} -1 LAUNCH_JSON)
-
+        
         set(REPLACED "")
         string(REGEX MATCH "^ *\"device\" *: *\".*\" *,? *\/\\* #update this field with CMake \\*\/" MATCHED ${STR})
         if(NOT ${MATCHED} STREQUAL "" )
@@ -153,7 +155,6 @@ function(update_launch_json MCU)
     else()
         message("-- Updated launch.json. \"device\" updated ${UPDATED_DEVICE} times, could not update \"svdFile\": no fitting .svd file found")
     endif()
-#
 endfunction()
 
 # Tries to match MCU with FILEEXTENSION and writes to <output>.
@@ -286,31 +287,5 @@ function(set_svd_repo_contents)
     STM32L552.svd
     STM32L562.svd
     STM32W108.svd
-    PARENT_SCOPE)
-endfunction()
-
-function(set_openocd_targets)
-set(OPENOCD_TARGETS
-    target/stm32f0x.cfg
-    target/stm32f1x.cfg
-    target/stm32f2x.cfg
-    target/stm32f3x.cfg
-    target/stm32f4x.cfg
-    target/stm32f7x.cfg
-    target/stm32g0x.cfg
-    target/stm32g4x.cfg
-    target/stm32h7x.cfg
-    target/stm32h7x_dual_bank.cfg
-    target/stm32l0.cfg
-    target/stm32l0_dual_bank.cfg
-    target/stm32l1.cfg
-    target/stm32l1x_dual_bank.cfg
-    target/stm32l4x.cfg
-    target/stm32l5x.cfg
-    target/stm32mp15x.cfg
-    target/stm32w108xx.cfg
-    target/stm32wbx.cfg
-    target/stm32wlx.cfg
-    target/stm32xl.cfg
     PARENT_SCOPE)
 endfunction()
