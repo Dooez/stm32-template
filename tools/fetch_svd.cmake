@@ -78,7 +78,7 @@ function(update_launch_json MCU)
         message("")
         message("No fitting .svd file defined. Try \`fetch_svd(${MCU})\`")
         message("Trying to find fitting .svd file in build/_deps/SVD")
-    
+
         file(GLOB_RECURSE SVD_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/build/_deps/SVD/*.svd)
         set(MATCH_WEIGHT_MAX 0)
         foreach(SVD_FILE_PATH ${SVD_FILES})
@@ -89,25 +89,25 @@ function(update_launch_json MCU)
                 set(ENV{BEST_FIT_SVD} ${SVD_FILE_PATH})
             endif()
         endforeach()
-        
+
         if ("$ENV{BEST_FIT_SVD}" STREQUAL "")
             message(WARNING "Could not find fitting in .svd file in build/_deps/SVD")
             set(SVD_FOUND OFF)
         else()
-            message("Found fitting .svd file: $ENV{BEST_FIT_SVD}")            
+            message("Found fitting .svd file: $ENV{BEST_FIT_SVD}")
         endif()
-        
+
         message("")
     endif()
-    
+
     if(NOT EXISTS  ${CMAKE_CURRENT_SOURCE_DIR}/.vscode/launch.json)
         file(WRITE  ${CMAKE_CURRENT_SOURCE_DIR}/.vscode/launch.json "{\n    \"configurations\": [\n        {\n            \"name\": \"Cortex Debug ST-Util\",\n            \"type\": \"cortex-debug\",\n            \"request\": \"launch\",\n            \"servertype\": \"stutil\",\n            \"cwd\": \"\${workspaceRoot}\",\n            \"executable\": \"\${command:cmake.launchTargetPath}\",\n            \"preLaunchTask\": \"CMake: build\",\n            \"preRestartCommands\": [\n                \"load\",\n                \"enable breakpoint\",\n                \"monitor reset\"\n            ],\n            \"runToEntryPoint\": \"main\",\n            \"showDevDebugOutput\": \"raw\",\n            \"device\": \"\", /* #update this field with CMake */\n            \"svdFile\": \"\", /* #update this field with CMake */\n        }\n    ]\n}\n")
     endif()
     file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/.vscode/launch.json LAUNCH_JSON NEWLINE_CONSUME)
 
-    
+
     set(UPDATED_LAUNCH_JSON "")
-    
+
     set(UPDATED_DEVICE 0)
     set(UPDATED_SVD 0)
     set(COUNT 1000) # If something goes wrong prevent endless loop
@@ -121,21 +121,21 @@ function(update_launch_json MCU)
             string(APPEND UPDATED_LAUNCH_JSON ${LAUNCH_JSON})
             break()
         endif()
-            
+
         string(SUBSTRING ${LAUNCH_JSON} 0 ${POS} STR)
         string(SUBSTRING ${LAUNCH_JSON} ${POS} -1 LAUNCH_JSON)
-        
+
         set(REPLACED "")
         string(REGEX MATCH "^ *\"device\" *: *\".*\" *,? *\/\\* #update this field with CMake \\*\/" MATCHED ${STR})
         if(NOT ${MATCHED} STREQUAL "" )
             string(REGEX REPLACE "\"device\"( *):( *)\".*\"" "\"device\"\\1:\\2\"${MCU}\"" REPLACED ${STR})
             math(EXPR UPDATED_DEVICE "${UPDATED_DEVICE} + 1")
         endif()
-        
+
         if(SVD_FOUND)
             string(REGEX MATCH "^ *\"svdFile\" *: *\".*\" *,? *\/\\* #update this field with CMake \\*\/" MATCHED ${STR})
             if(NOT ${MATCHED} STREQUAL "" )
-                string(REGEX REPLACE "\"svdFile\"( *):( *)\".*\"" "\"svdFile\"\\1:\\2\"$ENV{BEST_FIT_SVD}\"" REPLACED ${STR})
+                string(REGEX REPLACE "\"svdFile\"( *):( *)\".*\"" "\"svdFile\"\\1:\\2\"\${workspaceRoot}$ENV{BEST_FIT_SVD}\"" REPLACED ${STR})
                 math(EXPR UPDATED_SVD "${UPDATED_SVD} + 1")
             endif()
         endif()
@@ -145,7 +145,7 @@ function(update_launch_json MCU)
         else()
             string(APPEND UPDATED_LAUNCH_JSON ${STR})
         endif()
-        
+
     endwhile()
 
     file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/.vscode/launch.json ${UPDATED_LAUNCH_JSON})
